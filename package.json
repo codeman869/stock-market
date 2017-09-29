@@ -1,0 +1,21 @@
+{
+  "name": "stock-market",
+  "version": "1.0.0",
+  "description": "A stock market web application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "node server.js",
+    "heroku-postbuild": "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
+    "client": "cd client &&  npm start"
+  },
+  "author": "Cody Deckard <cjdeckard@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.0"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.0"
+  }
+}
