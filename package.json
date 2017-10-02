@@ -13,6 +13,7 @@
   "author": "Cody Deckard <cjdeckard@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.16.2",
     "express": "^4.16.0",
     "socket.io": "^2.0.3"
   },
