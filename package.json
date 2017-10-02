@@ -5,9 +5,11 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "precommit": "lint-staged",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "node server.js",
-    "heroku-postbuild": "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
+    "heroku-postbuild":
+      "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
     "client": "cd client &&  npm start"
   },
   "author": "Cody Deckard <cjdeckard@gmail.com>",
@@ -15,9 +17,18 @@
   "dependencies": {
     "axios": "^0.16.2",
     "express": "^4.16.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^4.2.3",
+    "prettier": "^1.7.3",
     "socket.io": "^2.0.3"
   },
   "devDependencies": {
     "concurrently": "^3.5.0"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,json,css}": [
+      "prettier --single-quote --no-semi --write",
+      "git add"
+    ]
   }
 }
