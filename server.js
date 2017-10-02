@@ -4,6 +4,7 @@ const app = express();
 const path = require('path');
 const socketIO = require('socket.io')
 
+
 const port = process.env.NODE_ENV != 'production' ? 3000 : process.env.PORT || 8080
 
 
@@ -31,10 +32,8 @@ if(process.env.NODE_ENV !== 'production') {
     io = socketIO(server)
 }
 
-io.on('connection', (socket) => {
-    console.log("A client connected")
-    
-    socket.on('disconnect', ()=>console.log('A client disconnected'))
-})
+const socketActions = require('./socketActions')(io).socketActions
+
+io.on('connection', socketActions)
 
 module.exports = app;

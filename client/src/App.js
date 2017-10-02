@@ -22,7 +22,11 @@ class App extends Component {
    } else {
      this.socket = io()
    }
+   this.socket.on('new stock', (companies) => console.log(companies))
    console.log(this.socket)
+  }
+  addCompany() {
+    this.socket.emit('new stock', 'APPL')
   }
   render() {
     return (
@@ -33,6 +37,7 @@ class App extends Component {
         </header>
         <p className="App-intro">
           To change, edit <code>src/App.js</code> and save to reload.
+          <button className='button-primary' onClick={this.addCompany.bind(this)}>Add Company</button>
         </p>
       </div>
     );
