@@ -32,7 +32,7 @@ if(process.env.NODE_ENV !== 'production') {
     io = socketIO(server)
 }
 
-const socketActions = require('./socketActions')(io).socketActions
+const socketActions = require('./app/socketActions')(io).socketActions
 
 io.on('connection', socketActions)
 
