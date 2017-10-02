@@ -1,10 +1,13 @@
 'use strict'
-const express=require('express');
+const express = require('express');
+const app = express();
 const path = require('path');
+const socketIO = require('socket.io')
 
 const port = process.env.NODE_ENV != 'production' ? 3000 : process.env.PORT || 8080
 
-const app = express();
+
+let io 
 
 app.use(express.static(path.resolve(__dirname, 'client/build')))
 
@@ -19,5 +22,19 @@ app.get('*', (req,res) => {
 })
 
 let server = app.listen(port, () => { console.log(`Application running on port: ${port}`);});
+
+if(process.env.NODE_ENV !== 'production') {
+    io = socketIO(server, {
+        path: '/api'
+    })
+} else {
+    io = socketIO(server)
+}
+
+io.on('connection', (socket) => {
+    console.log("A client connected")
+    
+    socket.on('disconnect', ()=>console.log('A client disconnected'))
+})
 
 module.exports = app;
