@@ -12,6 +12,7 @@ const params = {
 function getStockInfo(company, cb) {
   const specificParams = Object.assign({}, params)
   specificParams.symbol = company
+
   axios
     .get(`${uri}/query`, {
       params: specificParams
