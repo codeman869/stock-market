@@ -1,18 +1,37 @@
-'use strict';
-const API = require('./services/alphaVantageAPI');
+'use strict'
+const API = require('./services/alphaVantageAPI')
 
 module.exports = function(io) {
   return {
     socketActions: function(client) {
-      this.companies = this.companies || ['MSFT'];
+      if (this.stockdata == undefined) {
+        this.stockdata = []
+        API.getStockInfo('MSFT', (err, data) => {
+          if (err) return console.warn(err)
+
+          this.stockdata.push(data)
+          io.emit('new stock', this.stockdata)
+        })
+      }
 
       client.on('new stock', stock => {
-        this.companies.push(stock);
-        io.emit('new stock', this.companies);
-        API.getStockInfo('MSFT');
-      });
+        API.getStockInfo(stock, (err, data) => {
+          if (err) return console.warn(err)
 
-      client.on('disconnect', () => console.log('A client disconnected'));
+          this.stockdata.push(data)
+          io.emit('new stock', this.stockdata)
+        })
+      })
+
+      client.on('remove stock', stock => {
+        let newstocks = this.stockdata.filter(item => {
+          return item['Meta Data']['2. Symbol'] !== stock
+        })
+        this.stockdata = newstocks
+        io.emit('new stock', this.stockdata)
+      })
+
+      client.on('disconnect', () => console.log('A client disconnected'))
     }
-  };
-};
+  }
+}

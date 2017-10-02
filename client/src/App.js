@@ -1,32 +1,33 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import axios from 'axios'
 import io from 'socket.io-client'
-import logo from './logo.svg';
-import './App.css';
+import logo from './logo.svg'
+import './App.css'
 import '../node_modules/skeleton-css/css/skeleton.css'
 
 class App extends Component {
   constructor(props) {
     super(props)
-   if(process.env.NODE_ENV !== 'production') {
-    axios.get('/api').then((res) => {
-      console.log(res)
-    })
-  
-   } 
-   if(process.env.NODE_ENV !== 'production') {
-      
-   this.socket = io({
-     path: '/api'
-   })
-   } else {
-     this.socket = io()
-   }
-   this.socket.on('new stock', (companies) => console.log(companies))
-   console.log(this.socket)
+    if (process.env.NODE_ENV !== 'production') {
+      axios.get('/api').then(res => {
+        console.log(res)
+      })
+    }
+    if (process.env.NODE_ENV !== 'production') {
+      this.socket = io({
+        path: '/api'
+      })
+    } else {
+      this.socket = io()
+    }
+    this.socket.on('new stock', companies => console.log(companies))
+    console.log(this.socket)
   }
   addCompany() {
-    this.socket.emit('new stock', 'APPL')
+    this.socket.emit('new stock', 'AAPL')
+  }
+  removeCompany() {
+    this.socket.emit('remove stock', 'MSFT')
   }
   render() {
     return (
@@ -37,11 +38,22 @@ class App extends Component {
         </header>
         <p className="App-intro">
           To change, edit <code>src/App.js</code> and save to reload.
-          <button className='button-primary' onClick={this.addCompany.bind(this)}>Add Company</button>
+          <button
+            className="button-primary"
+            onClick={this.addCompany.bind(this)}
+          >
+            Add Company
+          </button>
+          <button
+            className="button-danger"
+            onClick={this.removeCompany.bind(this)}
+          >
+            Remove Company
+          </button>
         </p>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
