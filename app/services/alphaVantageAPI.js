@@ -17,7 +17,12 @@ function getStockInfo(company, cb) {
     .get(`${uri}/query`, {
       params: specificParams
     })
-    .then(resp => cb(null, resp.data))
+    .then(resp => {
+      if (resp.data['Error Message']) {
+        return cb(resp.data)
+      }
+      return cb(null, resp.data)
+    })
     .catch(err => cb(err))
 }
 

@@ -12,6 +12,7 @@ class StockStore {
       socket = io()
     }
     socket.on('new stock', stocks => this.updateStocks(stocks))
+    socket.on('invalid stock', stock => console.warn(`Invalid stock: ${stock}`))
     extendObservable(this, {
       stocks: [],
       socket
