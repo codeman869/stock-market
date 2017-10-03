@@ -21,14 +21,13 @@ const Controls = observer(
       e.preventDefault()
       const { inputValue } = this.state
       this.props.store.createNew(inputValue)
+      this.setState({
+        inputValue: ''
+      })
     }
 
     componentWillMount() {
-      this.props.store.socket.on('new stock', data => this.updateStocks(data))
-    }
-
-    updateStocks(newStocks) {
-      this.props.store.updateStocks(newStocks)
+      this.props.store.getStocks()
     }
 
     removeStock() {

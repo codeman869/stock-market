@@ -11,7 +11,7 @@ class StockStore {
     } else {
       socket = io()
     }
-
+    socket.on('new stock', stocks => this.updateStocks(stocks))
     extendObservable(this, {
       stocks: [],
       socket
@@ -24,6 +24,10 @@ class StockStore {
 
   updateStocks(newStocks) {
     this.stocks = newStocks
+  }
+
+  getStocks() {
+    this.socket.emit('get stocks')
   }
 }
 

@@ -10,9 +10,13 @@ module.exports = function(io) {
           if (err) return console.warn(err)
 
           this.stockdata.push(data)
-          io.emit('new stock', this.stockdata)
+          client.emit('new stock', this.stockdata)
         })
       }
+
+      client.on('get stocks', () => {
+        client.emit('new stock', this.stockdata)
+      })
 
       client.on('new stock', stock => {
         API.getStockInfo(stock, (err, data) => {
