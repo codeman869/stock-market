@@ -26,6 +26,10 @@ class StockStore {
     this.stocks = newStocks
   }
 
+  removeStock(stock) {
+    this.socket.emit('remove stock', stock)
+  }
+
   getStocks() {
     this.socket.emit('get stocks')
   }

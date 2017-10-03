@@ -35,7 +35,6 @@ const Controls = observer(
     }
 
     render() {
-      console.log(this.props)
       return (
         <form>
           <div className="row">
