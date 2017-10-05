@@ -16,7 +16,7 @@ class App extends Component {
           <Header />
         </div>
         <div className="row">
-          <Chart />
+          <Chart store={theStore} />
         </div>
         <div className="row">
           <StockList store={theStore} />
