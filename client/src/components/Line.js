@@ -3,9 +3,9 @@ import { line } from 'd3-shape'
 
 export default class Line extends Component {
   render() {
-    let { lineColor, xScale, yScale, data, width, height } = this.props
-    width = parseInt(width, 10)
-    height = parseInt(height, 10)
+    let { lineColor, xScale, yScale, data } = this.props
+    //width = parseInt(width, 10)
+    //height = parseInt(height, 10)
 
     let path = line()
       .x(d => xScale(d.date))

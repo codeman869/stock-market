@@ -3,11 +3,19 @@ import { observer } from 'mobx-react'
 import { scaleTime, scaleLinear } from 'd3-scale'
 import { extent, max } from 'd3-array'
 import { timeParse } from 'd3-time-format'
+import { axisBottom, axisRight, axisLeft } from 'd3-axis'
+import { timeDay } from 'd3-time'
+import { timeFormat } from 'd3-time-format'
 
 import Line from './Line'
+import Axis from './Axis'
 
 let Chart = observer(
   class Chart extends Component {
+    constructor(props) {
+      super(props)
+      this.margin = { top: 5, right: 50, bottom: 20, left: 50 }
+    }
     extractDataSeries() {
       const { stocks } = this.props.store
       this.dataSeries = []
@@ -32,12 +40,18 @@ let Chart = observer(
     }
 
     render() {
-      let x, y
+      let { width, height } = this.props
+      if (width === undefined || height === undefined) {
+        width = 800
+        height = 400
+      }
+      const w = width - (this.margin.right + this.margin.left),
+        h = height - (this.margin.top + this.margin.bottom)
+
+      let x, y, xAxis, content, yAxis, displayTimeFormat, gridAxis
+
       this.extractDataSeries()
-      let content
       if (this.dataSeries.length > 0) {
-        let width = 400,
-          height = 400
         let dates = [],
           closes = []
         this.dataSeries.forEach(data => {
@@ -48,10 +62,16 @@ let Chart = observer(
         })
         x = scaleTime()
           .domain(extent(dates))
-          .rangeRound([0, width])
+          .rangeRound([0, w])
         y = scaleLinear()
           .domain([0, max(closes)])
-          .range([height, 0])
+          .range([h, 0])
+        displayTimeFormat = timeFormat('%d %b %y')
+        xAxis = axisBottom(x)
+          .ticks(timeDay.every(20))
+          .tickFormat(displayTimeFormat)
+        yAxis = axisRight(y).ticks(20)
+        gridAxis = axisLeft(y).ticks(6)
         content = this.dataSeries.map((d, i) => (
           <Line
             height={height + 'px'}
@@ -63,11 +83,21 @@ let Chart = observer(
             data={d}
           />
         ))
+        //let xAxis = <Axis scale={x} />
+        //let yAxis = <Axis scale={y} />
       }
-
       return (
-        <svg height="400px" width="400px">
-          {content}
+        <svg height={height + 'px'} width={width + 'px'}>
+          <g
+            transform={
+              'translate(' + this.margin.left + ',' + this.margin.top + ')'
+            }
+          >
+            {content}
+            <Axis axis={xAxis} axisType="x" h={h} />
+            <Axis axis={yAxis} axisType="y" h={w} />
+            <Axis axis={gridAxis} axisType="grid" h={w} />
+          </g>
         </svg>
       )
     }
