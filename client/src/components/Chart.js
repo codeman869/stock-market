@@ -9,6 +9,7 @@ import { timeFormat } from 'd3-time-format'
 
 import Line from './Line'
 import Axis from './Axis'
+import DataPoints from './DataPoints'
 
 let Chart = observer(
   class Chart extends Component {
@@ -77,15 +78,25 @@ let Chart = observer(
         yAxis = axisRight(y).ticks(20)
         gridAxis = axisLeft(y).ticks(6)
         content = this.dataSeries.map((d, i) => (
-          <Line
-            height={height + 'px'}
-            width={width + 'px'}
-            xScale={x}
-            yScale={y}
-            key={d[i].stockName}
-            lineColor={colors[i % 12]}
-            data={d}
-          />
+          <g key={d[i].stockName + 'Group'}>
+            <Line
+              height={height + 'px'}
+              width={width + 'px'}
+              xScale={x}
+              yScale={y}
+              key={d[i].stockName}
+              lineColor={colors[i % 12]}
+              data={d}
+            />
+            <DataPoints
+              key={d[i].stockName + 'Points'}
+              data={d}
+              xScale={x}
+              yScale={y}
+              color={colors[i % 12]}
+              r={2}
+            />
+          </g>
         ))
         //let xAxis = <Axis scale={x} />
         //let yAxis = <Axis scale={y} />
