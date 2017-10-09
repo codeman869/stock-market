@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
 import { scaleTime, scaleLinear } from 'd3-scale'
-import { extent, max } from 'd3-array'
+import { extent } from 'd3-array'
 import { timeParse } from 'd3-time-format'
 import { axisBottom, axisRight, axisLeft } from 'd3-axis'
 import { timeDay } from 'd3-time'
@@ -16,6 +16,7 @@ let Chart = observer(
       super(props)
       this.margin = { top: 5, right: 50, bottom: 20, left: 50 }
     }
+
     extractDataSeries() {
       const { stocks } = this.props.store
       this.dataSeries = []
@@ -40,7 +41,10 @@ let Chart = observer(
     }
 
     render() {
+      const { colors } = this.props.store
+
       let { width, height } = this.props
+
       if (width === undefined || height === undefined) {
         width = 800
         height = 400
@@ -64,7 +68,7 @@ let Chart = observer(
           .domain(extent(dates))
           .rangeRound([0, w])
         y = scaleLinear()
-          .domain([0, max(closes)])
+          .domain(extent(closes))
           .range([h, 0])
         displayTimeFormat = timeFormat('%d %b %y')
         xAxis = axisBottom(x)
@@ -79,7 +83,7 @@ let Chart = observer(
             xScale={x}
             yScale={y}
             key={d[i].stockName}
-            lineColor="#000000"
+            lineColor={colors[i % 12]}
             data={d}
           />
         ))

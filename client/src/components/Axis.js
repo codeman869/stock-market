@@ -19,7 +19,7 @@ export default class Axis extends Component {
       if (axisType === 'grid') {
         selection.select('.domain').remove()
         selection
-          .selectAll('.tick:not(:first-of-type) line')
+          .selectAll('.tick line')
           .attr('stroke', '#777')
           .attr('stroke-dasharray', '2,2')
           .attr('x1', h)

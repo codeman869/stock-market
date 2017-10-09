@@ -8,12 +8,15 @@ const StockList = observer(
     }
 
     render() {
-      const { stocks } = this.props.store
-      const stockList = stocks.map(item => {
+      const { stocks, colors } = this.props.store
+      const stockList = stocks.map((item, idx) => {
         const id = item['Meta Data']['2. Symbol']
         return (
           <li key={id}>
-            <span onClick={this.removeStock.bind(this, id)}>
+            <span
+              onClick={this.removeStock.bind(this, id)}
+              style={{ color: colors[idx % 12] }}
+            >
               [X]
             </span>&nbsp;&nbsp;{id}
           </li>
