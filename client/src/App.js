@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import MediaQuery from 'react-responsive'
+
 import '../node_modules/skeleton-css/css/skeleton.css'
 
 import Header from './components/Header'
@@ -16,7 +18,15 @@ class App extends Component {
           <Header />
         </div>
         <div className="row">
-          <Chart store={theStore} />
+          <MediaQuery maxDeviceWidth={600}>
+            <Chart store={theStore} width="400" height="200" />
+          </MediaQuery>
+          <MediaQuery minDeviceWidth={600} maxDeviceWidth={900}>
+            <Chart store={theStore} width={600} height={250} />
+          </MediaQuery>
+          <MediaQuery minDeviceWidth={900}>
+            <Chart store={theStore} />
+          </MediaQuery>
         </div>
         <div className="row">
           <StockList store={theStore} />
