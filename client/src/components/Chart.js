@@ -10,12 +10,64 @@ import { timeFormat } from 'd3-time-format'
 import Line from './Line'
 import Axis from './Axis'
 import DataPoints from './DataPoints'
+import ToolTip from './ToolTip'
 
 let Chart = observer(
   class Chart extends Component {
     constructor(props) {
       super(props)
       this.margin = { top: 5, right: 50, bottom: 20, left: 50 }
+      this.showToolTip = this.showToolTip.bind(this)
+      this.hideToolTip = this.hideToolTip.bind(this)
+      this.state = {
+        tooltip: {
+          display: false,
+          data: {
+            key: '',
+            value: '',
+            stock: ''
+          },
+          pos: {
+            x: '',
+            y: ''
+          }
+        }
+      }
+    }
+
+    hideToolTip(e) {
+      this.setState({
+        tooltip: {
+          display: false,
+          data: {
+            key: '',
+            value: '',
+            stock: ''
+          },
+          pos: {
+            x: '',
+            y: ''
+          }
+        }
+      })
+    }
+
+    showToolTip(e) {
+      // e.target.setAttribute('fill', '#FFFFFF')
+      this.setState({
+        tooltip: {
+          display: true,
+          data: {
+            key: e.target.getAttribute('data-key'),
+            value: e.target.getAttribute('data-value'),
+            stock: e.target.getAttribute('data-stock')
+          },
+          pos: {
+            x: e.target.getAttribute('cx'),
+            y: e.target.getAttribute('cy')
+          }
+        }
+      })
     }
 
     extractDataSeries() {
@@ -94,7 +146,9 @@ let Chart = observer(
               xScale={x}
               yScale={y}
               color={colors[i % 12]}
-              r={2}
+              r={4}
+              hideToolTip={this.hideToolTip}
+              showToolTip={this.showToolTip}
             />
           </g>
         ))
@@ -112,6 +166,11 @@ let Chart = observer(
             <Axis axis={xAxis} axisType="x" h={h} />
             <Axis axis={yAxis} axisType="y" h={w} />
             <Axis axis={gridAxis} axisType="grid" h={w} />
+            <ToolTip
+              chartHeight={height}
+              chartWidth={width}
+              tooltip={this.state.tooltip}
+            />
           </g>
         </svg>
       )
