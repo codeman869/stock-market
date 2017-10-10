@@ -1,0 +1,32 @@
+.stock-item {
+  border: 1px solid #ccc;
+  padding: 5px;
+  background: #eee;
+  border-radius: 10px;
+}
+.stock-item:hover {
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+.stock-text {
+  font-size: 15px;
+  font-weight: bold;
+  display: block;
+  text-align: center;
+}
+.stock-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 5px;
+  margin: 10px;
+}
+.close {
+  float: right;
+  display: inline-block;
+  padding: 2px 5px;
+  background: #ccc;
+  font-size: 10px;
+}
+
+.close:hover {
+  cursor: pointer;
+}
