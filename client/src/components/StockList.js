@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
 
+import './StockList.css'
+
 const StockList = observer(
   class StockList extends Component {
     removeStock(stock) {
@@ -12,17 +14,17 @@ const StockList = observer(
       const stockList = stocks.map((item, idx) => {
         const id = item['Meta Data']['2. Symbol']
         return (
-          <li key={id}>
-            <span
-              onClick={this.removeStock.bind(this, id)}
-              style={{ color: colors[idx % 12] }}
-            >
-              [X]
-            </span>&nbsp;&nbsp;{id}
-          </li>
+          <div key={id} className="stock-item">
+            <span className="close" onClick={this.removeStock.bind(this, id)}>
+              X
+            </span>
+            <span className="stock-text" style={{ color: colors[idx % 12] }}>
+              {id}
+            </span>
+          </div>
         )
       })
-      return <ul> {stockList} </ul>
+      return <div className="stock-list">{stockList}</div>
     }
   }
 )
