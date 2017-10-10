@@ -50,7 +50,9 @@ class StockStore {
   }
 }
 
-let theStore = (window.store = new StockStore())
+let theStore = new StockStore()
+if (process.env.NODE_ENV !== 'production') {
+  window.store = theStore
+  autorun(() => console.log(theStore.stocks))
+}
 export default theStore
-
-autorun(() => console.log(theStore.stocks))

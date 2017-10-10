@@ -35,8 +35,6 @@ export default class ToolTip extends Component {
       if (x + width > chartWidth) {
         xTransform = x - width
       } else if (x - width / 2 < 0) {
-        console.log(`X-width:${x - width / 2}`)
-        console.log(`chartWidth: ${chartWidth}`)
         xTransform = x - width / 2 + 30
       } else {
         xTransform = x - width / 2
